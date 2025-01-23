@@ -1,4 +1,4 @@
-const DB_NAME = 'test';
+const DB_NAME = 'my-xpress-app';
 
 // max limit of express req
 const MAX_LIMIT = '16kb';

@@ -4,11 +4,13 @@ import mongoose from 'mongoose';
 // internal imports
 import { DB_NAME } from '../utils/constants.js';
 
+const mongodbUri = process.env.MONGODB_URI || 'mongodb://localhost:27017';
+
 // connection instance
 const connectDB = async () => {
     try {
         const connectionInstance = await mongoose.connect(
-            `${process.env.MONGODB_URI}/${DB_NAME}`
+            `${mongodbUri}/${DB_NAME}`
         );
 
         console.log(
