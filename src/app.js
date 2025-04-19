@@ -45,9 +45,34 @@ app.use(express.static("public"));
 app.use(cookieParser());
 
 // routes import
+import authRouter from './routes/auth.route.js';
 import welcomeRouter from './routes/welcome.route.js';
 
 // routes declaration
+app.use('/', welcomeRouter);
+app.use(API_V, welcomeRouter);
 app.use(API_V + '/welcome', welcomeRouter);
+app.use(API_V + '/auth', authRouter);
+
+// error handling middleware
+app.use((err, req, res, next) => {
+    console.error(err);
+
+    if (err instanceof ApiError || err.type === 'entity.too.large') {
+        return res.status(err.statusCode).json({
+            statusCode: err.statusCode,
+            success: err.success || false,
+            message: err.message,
+            errors: err.errors,
+            // stack: err.stack
+        });
+    }
+
+    res.status(500).json({
+        statusCode: 500,
+        success: false,
+        message: 'An unexpected error occurred',
+    });
+});
 
 export default app;
